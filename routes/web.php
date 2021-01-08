@@ -14,3 +14,6 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::resource('majors', 'MajorController');
+Route::resource('students', 'StudentController');
