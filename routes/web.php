@@ -17,3 +17,4 @@ Route::get('/', function () {
 
 Route::resource('majors', 'MajorController');
 Route::resource('students', 'StudentController');
+Route::get('get-major', 'MajorController@getMajor')->name('getMajor');

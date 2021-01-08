@@ -69,4 +69,9 @@ class MajorController extends Controller
 
         return response()->json(['success'=>'Major deleted successfully']);
     }
+
+    public function getMajor()
+    {
+        return view('case.index');
+    }
 }

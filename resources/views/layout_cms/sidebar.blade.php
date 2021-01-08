@@ -18,6 +18,11 @@
                     <i class="fas fa-user"></i><span>Students</span>
                 </a>
             </li>
+            <li class="{{ (request()->routeIs('getMajor')) ? 'active' : '' }}">
+                <a href="{{ route('getMajor') }}" class="nav-link">
+                    <i class="fas fa-address-book"></i><span>Consume API</span>
+                </a>
+            </li>
         </ul>
     </aside>
 </div>
