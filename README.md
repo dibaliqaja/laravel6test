@@ -64,6 +64,18 @@ $ php artisan db:seed
 $ php artisan serve
 ```
 
+### Screenshots
+
+![image](https://raw.githubusercontent.com/dibaliqaja/laravel6test/main/screenshots/1.png)
+
+![image](https://raw.githubusercontent.com/dibaliqaja/laravel6test/main/screenshots/2.png)
+
+![image](https://raw.githubusercontent.com/dibaliqaja/laravel6test/main/screenshots/3.png)
+
+![image](https://raw.githubusercontent.com/dibaliqaja/laravel6test/main/screenshots/4.png)
+
+![image](https://raw.githubusercontent.com/dibaliqaja/laravel6test/main/screenshots/5.png)
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
 <p align="center">
