@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('/mobile')->group(function () {
+    Route::get('students', 'StudentController@getDataAllStudent')->name('get.all.student');
+    Route::get('students/{id}', 'StudentController@getDataAllStudentWithFilter')->name('get.filter.student');
 });

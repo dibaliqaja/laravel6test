@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StudentRequest;
 use App\Major;
 use App\Student;
-use Illuminate\Http\Request;
+use Exception;
 
 class StudentController extends Controller
 {
@@ -46,17 +46,6 @@ class StudentController extends Controller
 
         return redirect()->route('students.index')
             ->with('alert', 'Student added successfully.');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**
@@ -102,5 +91,48 @@ class StudentController extends Controller
 
         return redirect()->route('students.index')
             ->with('alert','Student deleted successfully.');
+    }
+
+    public function getDataAllStudent()
+    {
+        $students = Student::with('major:id,title,major')
+            ->select('id', 'name', 'age', 'phone_number', 'email', 'major_id')
+            ->latest()
+            ->get();
+
+        return $this->result($students, 'Get data all student.');
+    }
+
+    public function getDataAllStudentWithFilter($major_id)
+    {
+        $students = Student::with('major:id,title,major')
+            ->where('major_id', $major_id)
+            ->select('id', 'name', 'age', 'phone_number', 'email', 'major_id')
+            ->latest()
+            ->get();
+
+        return $this->result($students, 'Get data all student with filter major_id.');
+    }
+
+    public function responseData($message, $status, $data = null)
+    {
+        return response()->json([
+            'message'   => $message,
+            'status'    => $status,
+            'data'      => $data
+        ], $status);
+    }
+
+    public function result($data, $message)
+    {
+        try {
+            if (!$data->isEmpty()) {
+                return $this->responseData($message, 200, $data);
+            }
+
+            return $this->responseData($message, 404, 'Not Found.');
+        } catch (Exception $ex) {
+            return $this->responseData($ex->getMessage(),500);
+        }
     }
 }

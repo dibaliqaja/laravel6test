@@ -12,9 +12,9 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('majors.index');
 });
 
-Route::resource('majors', 'MajorController');
-Route::resource('students', 'StudentController');
+Route::resource('majors', 'MajorController', ['except' => ['create', 'edit', 'update']]);
+Route::resource('students', 'StudentController', ['except' => 'show']);
 Route::get('get-major', 'MajorController@getMajor')->name('getMajor');

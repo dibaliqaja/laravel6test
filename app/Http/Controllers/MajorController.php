@@ -65,7 +65,7 @@ class MajorController extends Controller
      */
     public function destroy($id)
     {
-        $major = Major::find($id)->delete();
+        Major::find($id)->delete();
 
         return response()->json(['success'=>'Major deleted successfully']);
     }
