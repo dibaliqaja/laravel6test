@@ -1,3 +1,69 @@
+## Laraschool App Test
+Laraschool App test is a simple project for an major students management with api that is created to fulfill the initial coding test with a given requirement.
+
+### Features
+> Point penting yang harus dipenuhi:
+- Membuat 2 Module, Student dan Class/Major ✅
+- Membuat API, getAllStudent dan getFilterStudent ✅
+- Consume API from getMajor.json with endpoint https://www.eannov8.com/career/case/getMajor.json ✅
+
+### Requirements
+- PHP >= 7.2.5
+- BCMath PHP Extension
+- Ctype PHP Extension
+- Fileinfo PHP extension
+- JSON PHP Extension
+- Mbstring PHP Extension
+- OpenSSL PHP Extension
+- PDO PHP Extension
+- Tokenizer PHP Extension
+- XML PHP Extension
+
+### Installation
+1. Clone GitHub repo for this project locally
+```bash
+$ git clone https://github.com/dibaliqaja/laravel6test.git
+```
+2. Change directory in project which already clone
+```bash
+$ cd laravel6test
+```
+3. Install Composer dependencies
+```bash
+$ composer install
+```
+4. Create a copy of your .env file
+```bash
+$ cp .env.example .env
+```
+5. Generate an app encryption key
+```bash
+$ php artisan key:generate
+```
+6. Create an empty database for our application
+
+7. In the .env file, add database information to allow Laravel to connect to the database
+```bash
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE={database-name}
+DB_USERNAME={username-database}
+DB_PASSWORD={password-database}
+```
+8. Migrate the database
+```bash
+$ php artisan migrate
+```
+9. Seed the database
+```bash
+$ php artisan db:seed
+```
+10. Running project
+```bash
+$ php artisan serve
+```
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
 <p align="center">
