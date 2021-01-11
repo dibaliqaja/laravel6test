@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Major;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class MajorController extends Controller
 {
@@ -12,11 +13,22 @@ class MajorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $majors = Major::latest()->paginate(10);
+        if ($request->ajax()) {
+            $data = Major::latest()->get();
+            return DataTables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('action', function($row){
+                        $btn = '<a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-info btn-sm editMajor"><i class="fas fa-pen"></i></a>';
+                        $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteMajor"><i class="fas fa-trash"></i></a>';
+                        return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
 
-        return view('major.index', compact('majors'));
+        return view('major.index');
     }
 
     /**
@@ -32,7 +44,7 @@ class MajorController extends Controller
             'major' => 'required|min:5',
         ]);
 
-        $major = Major::updateOrCreate(['id' => $request->id], [
+        $major = Major::updateOrCreate(['id' => $request->major_id], [
             'title' => $request->title,
             'major' => $request->major
         ]);
@@ -45,12 +57,12 @@ class MajorController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function edit($id)
     {
         $major = Major::findOrFail($id);
 
