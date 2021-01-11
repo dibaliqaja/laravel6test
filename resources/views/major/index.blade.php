@@ -2,15 +2,6 @@
 @section('title_page','Majors')
 @section('content')
 
-    @if (Session::has('alert'))
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            {{ Session('alert') }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    @endif
-
     <div class="row">
         <div class="col-md-8">
             <a href="javascript:void(0)" class="btn btn-primary" id="create-new-major" onclick="addMajor()">Add Major</a><br>
@@ -35,8 +26,8 @@
                     <td>{{ $major->title }}</td>
                     <td>{{ $major->major }}</td>
                     <td align="center">
-                        <a href="javascript:void(0)" data-id="{{ $major->id }}" onclick="editMajor(event.target)" class="btn btn-sm btn-info">Edit</i></a>
-                        <a href="javascript:void(0)" data-id="{{ $major->id }}" class="btn btn-sm btn-danger" onclick="deleteMajor(event.target)">Delete</i></a>
+                        <a href="javascript:void(0)" data-id="{{ $major->id }}" onclick="editMajor(event.target)" class="btn btn-sm btn-info">Edit</a>
+                        <a href="javascript:void(0)" data-id="{{ $major->id }}" onclick="deleteMajor(event.target)" class="btn btn-sm btn-danger">Delete</a>
                     </td>
                 </tr>
                 @endforeach
@@ -51,11 +42,15 @@
 
 @section('modal')
     <!-- Modal Major -->
-    <div class="modal fade" id="major-modal" aria-hidden="true">
-        <div class="modal-dialog">
+    <div class="modal fade" id="major-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    {{-- <div class="modal fade" id="major-modal" aria-hidden="true"> --}}
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Create/Update Major</h4>
+                    <h4 class="modal-title" id="vcenter">Create/Update Major</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
                     <form name="majorForm" class="form-horizontal">
@@ -76,19 +71,24 @@
                             </div>
                         </div>
                     </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" onclick="createMajor()">Save</button>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" onclick="createMajor()">Save</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
 @endsection
 
 @section('script')
 <script>
     function addMajor() {
-      $('#major-modal').modal('show');
+        $('#title').val('');
+        $('#major').val('');
+        $('#titleError').text('');
+        $('#majorError').text('');
+        $('#major-modal').modal('show');
     }
 
     function editMajor(event) {
@@ -101,6 +101,7 @@
             url: _url,
             type: "GET",
             success: function(response) {
+                console.log(response)
                 if(response) {
                     $("#major_id").val(response.id);
                     $("#title").val(response.title);
@@ -123,28 +124,28 @@
             url: _url,
             type: "POST",
             data: {
-            id: id,
-            title: title,
-            major: major,
-            _token: _token
+                id: id,
+                title: title,
+                major: major,
+                _token: _token
             },
             success: function(response) {
                 if(response.status == 200) {
-                if(id != ""){
-                    $("#row_"+id+" td:nth-child(2)").html(response.data.title);
-                    $("#row_"+id+" td:nth-child(3)").html(response.data.major);
-                } else {
-                    $('table tbody').prepend('<tr id="row_'+response.data.id+'"><td>'+response.data.id+'</td><td>'+response.data.title+'</td><td>'+response.data.major+'</td><td align="center"><a href="javascript:void(0)" data-id="'+response.data.id+'" onclick="editMajor(event.target)" class="btn btn-sm btn-info">Edit</a> <a href="javascript:void(0)" data-id="'+response.data.id+'" class="btn btn-sm btn-danger" onclick="deleteMajor(event.target)">Delete</a></td></tr>');
-                }
-                $('#title').val('');
-                $('#major').val('');
+                    if(id != ""){
+                        $("#row_"+id+" td:nth-child(2)").html(response.data.title);
+                        $("#row_"+id+" td:nth-child(3)").html(response.data.major);
+                    } else {
+                        $('table tbody').prepend('<tr id="row_'+response.data.id+'"><td>'+response.data.id+'</td><td>'+response.data.title+'</td><td>'+response.data.major+'</td><td align="center"><a href="javascript:void(0)" data-id="'+response.data.id+'" onclick="editMajor(event.target)" class="btn btn-sm btn-info">Edit</a> <a href="javascript:void(0)" data-id="'+response.data.id+'" class="btn btn-sm btn-danger" onclick="deleteMajor(event.target)">Delete</a></td></tr>');
+                    }
+                    $('#title').val('');
+                    $('#major').val('');
 
-                $('#major-modal').modal('hide');
+                    $('#major-modal').modal('hide');
                 }
             },
             error: function(response) {
-            $('#titleError').text(response.responseJSON.errors.title);
-            $('#majorError').text(response.responseJSON.errors.major);
+                $('#titleError').text(response.responseJSON.errors.title);
+                $('#majorError').text(response.responseJSON.errors.major);
             }
         });
     }
@@ -154,15 +155,22 @@
         let _url = `/majors/${id}`;
         let _token   = $('meta[name="csrf-token"]').attr('content');
 
-        if (confirm("Are you sure?")) {
+        if(confirm('Are you sure?')) {
             $.ajax({
                 url: _url,
                 type: 'DELETE',
                 data: {
-                _token: _token
+                    _token: _token
                 },
                 success: function(response) {
-                $("#row_"+id).remove();
+                    $("#row_"+id).remove();
+                    console.log(response);
+                },
+                error : (error) => {
+                    if (error.status === 500) {
+                        alert('Major still used in Student');
+                    }
+                    console.log(JSON.stringify(error));
                 }
             });
         }

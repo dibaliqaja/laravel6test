@@ -28,8 +28,8 @@ class MajorController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|min:5|unique:majors,title,'.$request->id,
-            'major' => 'required|min:5|unique:majors,major,'.$request->id
+            'title' => 'required|min:5',
+            'major' => 'required|min:5',
         ]);
 
         $major = Major::updateOrCreate(['id' => $request->id], [
@@ -52,7 +52,7 @@ class MajorController extends Controller
      */
     public function show($id)
     {
-        $major = Major::find($id);
+        $major = Major::findOrFail($id);
 
         return response()->json($major);
     }
@@ -65,7 +65,8 @@ class MajorController extends Controller
      */
     public function destroy($id)
     {
-        Major::find($id)->delete();
+        $major = Major::findOrFail($id);
+        $major->delete();
 
         return response()->json(['success'=>'Major deleted successfully']);
     }

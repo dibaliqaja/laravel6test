@@ -15,6 +15,6 @@ Route::get('/', function () {
     return redirect()->route('majors.index');
 });
 
-Route::resource('majors', 'MajorController', ['except' => ['create', 'edit', 'update']]);
+Route::resource('majors', 'MajorController', ['except' => ['create', 'edit']]);
 Route::resource('students', 'StudentController', ['except' => 'show']);
 Route::get('get-major', 'MajorController@getMajor')->name('getMajor');

@@ -114,7 +114,7 @@ class StudentController extends Controller
         return $this->result($students, 'Get data all student with filter major_id.');
     }
 
-    public function responseData($message, $status, $data = null)
+    protected function responseData($message, $status, $data = null)
     {
         return response()->json([
             'message'   => $message,
@@ -123,7 +123,7 @@ class StudentController extends Controller
         ], $status);
     }
 
-    public function result($data, $message)
+    protected function result($data, $message)
     {
         try {
             if (!$data->isEmpty()) {
